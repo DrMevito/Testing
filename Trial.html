@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch Record from PocketBase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color:#f8faf9;
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            height: 100vh;
+            width: 100vw;
+        }
+        
+    .header{
+      display: flex;
+           max-width:;
+            width:;
+            margin:;
+      justify-content: space-between;
+      background-color:;
+      padding:0px 20px 0px 20px;
+        }
+   .header h2{
+     font-size: 20px;
+     color:;
+     font-weight: 500.7;
+   }     
+        
+    .logo_side{
+      display: flex;
+      gap:20px;
+    }    
+
+        .container {
+            max-width:;
+            width:;
+            margin:;
+            padding:0px 20px 0 20px;
+        }
+
+
+
+        .record-details {
+            margin-top:0px;
+          padding: 13px 20px 20px 13px;
+            border-radius: 10px;
+            min-height: 50px;
+            background:#ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+    #acc_name{
+      display: flex;
+      flex-direction: row;
+      background-color:;
+      align-items:  center;
+      gap: 6px;
+    }    
+    #acc_name img {
+      margin-top:6px;
+      background-color:;
+    }
+    
+    #acc_name h2{
+      margin: 0px;
+      font-size: 20px;
+      font-weight:500.7;
+    }
+    
+    #acc_id{
+      display: flex;
+      background-color:;
+      align-items: start;
+      margin-top: 2px;
+      gap:3.5px;
+      font-weight: 400;
+    }
+    
+    #acc_id span{
+      background-color:#f4f5f7;
+      font-size: 10px;
+      padding: 3px 5.5px 3px 5.5px;
+      border-radius: 2px;
+      margin: 0px;
+      background-color:;
+    }
+    
+    #acc_id h2{
+      font-size: 10px;
+      font-weight: 400;
+      padding-left: 10px;
+      padding-top:2.5px;
+      margin-top:0;
+      background-color:;
+    }
+    
+    #acc_balance{
+      
+    }
+    
+    #acc_balance h2{
+      font-size: 19px;
+      font-weight: 500.7;
+      margin: 10px 0px 0px 0px;
+    }
+    
+    #acc_menu{
+      width: 60%;
+      max-width: 250px;
+      padding-top: 20px;
+      margin:0 auto;
+      background-color:;
+    }
+    #acc_menu span{
+      font-size:;
+    }
+    
+    
+    
+    
+    #down_menu, #up_menu{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    
+    #up_menu{
+      padding: 0px 0px 0px 0px;
+      background-color:;
+      margin-bottom: 10px;
+    }
+    #up_menu span{
+      background-color:#f4f5f7;
+      border-radius: 50%;
+      width: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height:45px;
+    }
+    #up_menu img {
+      width: 22px;
+      height: 22px;
+    }
+    #down_menu span{
+      background-color:;
+      font-size: 12px;
+      width:;
+    }
+    
+    
+    .task{
+      max-width:;
+      margin:;
+      padding:25px 20px 0 20px;
+    }
+    #task{
+      color: #6f7277;
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      width:;
+      border-bottom: 1px solid #e3e5e4;
+      background-color:;
+    }
+    #task span{
+      font-size: 12px;
+      font-weight:400;
+      padding-bottom:10px;
+      padding-left: 10px;
+      background-color: ;
+    }
+    
+  #task_active{
+      color: black;
+      border-bottom: 2px solid black;
+      
+      padding-right: 10px;
+    }
+    
+    #date{
+      display: flex;
+      max-width:;
+      padding: 25px 30px 10px 30px;
+      margin:;
+      flex-direction: row;
+      justify-content: space-between;
+      font-size:12px ;
+      background-color:;
+      color: #717578;
+      width:;
+      
+    }
+    #date span{
+      padding: 0 0px 0 0px;
+      background-color:;
+      font-weight:480;
+    }
+    
+    
+    
+   .post_title{
+     display:flex;
+     flex-direction: row;
+     align-items: center;
+     gap: 10px;
+   } 
+    .post_title span{
+      font-size: 14px;
+      font-weight: 450;
+    }
+    
+    
+   #posts-container_o{
+     max-width:;
+        margin:;
+        padding:0 20px 0 20px;
+   } 
+    
+    #posts-container {
+        background-color:#ffff;
+        border-radius: 10px;
+        
+        }
+        
+        
+        .post {
+            background-color:;
+            border-bottom: 1px solid #ccc;
+            
+        }
+        
+        .post h2{
+          margin:0px;
+          font-weight:450;
+          font-size: 12px;
+        }
+        
+        .post1 {
+            display:flex;
+            justify-content:space-between;
+            background-color:;
+            align-items: center;
+          padding: 10px 10px 0px 10px;
+          
+        }
+        
+        .post_1 {
+            display:flex;
+            gap:5px;
+            justify-content:;
+            background-color:;
+            align-items: center;
+            margin-left: 36px;
+            margin-top: 0px;
+            
+        }
+        
+        .post_1 h2{
+          font-weight: 402;
+          background-color:;
+          
+        }
+        
+         .post2 {
+            display:flex;
+            justify-content:space-between;
+            background-color:;
+            align-items: center;
+           padding: 4px 10px 10px 10px;
+        }
+        
+        .post2 h3{
+          font-size: 12px;
+          font-weight: 400;
+          color: #747474;
+          background-color:;
+          margin: 0px;
+        }
+        
+
+        
+        .post .final {
+            font-size:13.5px;
+            font-weight: 400;
+        }
+  
+
+  
+  
+  .bottom_nav{
+    
+      max-width:;
+            width:100%;
+            margin:;
+      position: absolute;
+      bottom: 0;
+      z-index: 1;
+      background-color:#ffffff;
+      padding:6px 0px 20px 0px;
+  }
+  
+  #nav_div{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    max-width: 600px;
+    margin: 0 auto;
+    padding:0px 20px 0px 20px;
+  }
+  
+  
+  .nav_btn{
+    display: flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    background-color:;
+  }
+  .nav_btn img {
+    width: 22px;
+    height: 22px;
+    padding-bottom: 5px;
+    background-color:;
+  }
+  .nav_btn h4{
+    margin:0px;
+    font-size: 9px;
+    font-weight:400;
+  }
+        
+    </style>
+</head>
+<body>
+  
+<div class="header">
+  <h2 class="logo">Accounts</h2>
+  <div class="logo_side">
+
+    <h2><img src="img/alarm_1.png" style="width:21px;height:21px;"/></h2>
+    
+    <h2><img src="img/bell_2.png" style="width:21px;height:21px;"/></h2>
+  </div>
+</div>  
+
+
+    <div class="container">
+        <div id="record-details" class="record-details"></div>
+    </div>
+    
+    
+    <!-- posts new -->
+    
+     
+    <div class="task">
+    <div id="task">
+      <span>Open</span>
+     <span>Pending</span>
+      <span id="task_active">Closed</span>
+    </div></div>
+    
+    <div id="date">
+      <span id="today_date">Today, 29 October</span>
+      <span id="total_profit">+7.30 USD</span>
+    </div>
+    
+   <div id="posts-container_o" ><div id="posts-container"></div>
+   </div>
+    
+    <div class="bottom_nav" >
+      <div id="nav_div">
+        
+      <span class="nav_btn"><img src="img/a.jpg" ><h4>Accounts</h4></span>
+      
+       <span class="nav_btn"><img src="img/b.jpg" ><h4>Trade</h4></span>
+       
+ <span class="nav_btn"><img src="img/c.jpg" ><h4>Markets</h4></span>
+ 
+ <span class="nav_btn"><img src="img/d.jpg" ><h4>Performance</h4></span>
+ 
+ <span class="nav_btn"><img src="img/e.jpg" ><h4>Profile</h4></span>
+ </div>
+    </div>
+
+    <script>
+        const recordId = 'unrxyqjt17vduwh'; // The record ID to fetch
+        const apiUrl = `https://deba-debnath.pockethost.io/api/collections/user_panel/records/${recordId}`; // Replace with your PocketBase URL and collection name
+
+        async function fetchRecord() {
+            const recordDetails = document.getElementById('record-details');
+
+            // Display cached data if available
+            const cachedData = localStorage.getItem(`record-${recordId}`);
+            if (cachedData) {
+  //const data = JSON.parse(cachedData);
+                displayRecord(JSON.parse(cachedData));
+            }
+
+            try {
+                // Fetch fresh data
+                const response_pan = await fetch(apiUrl);
+                if (!response_pan.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const freshData = await response_pan.json();
+
+                // Save fresh data to cache
+                localStorage.setItem(`record-${recordId}`, JSON.stringify(freshData));
+
+                // Update UI with fresh data
+                displayRecord(freshData);
+            } catch (error) {
+                console.error('Error fetching record:', error);
+                if (!cachedData) {
+                    recordDetails.innerHTML = '<p>Error fetching record. Please try again later.</p>';
+                }
+            }
+        }
+
+        function displayRecord(data) {
+            const recordDetails = document.getElementById('record-details');
+            recordDetails.innerHTML = `
+            <div id="acc_name"><h2 >${data.name}</h2><h2><img src="img/drop_down.png" style="width:19px;height:19px;" /></h2></div>
+            
+ <div id="acc_id"><span>Real</span><span>MT5</span><span>Raw Spread</span><h2 id="profile_id">#12345678</h2></div>    
+ 
+    <div id="acc_balance"> <h2 >${data.profile_bal}</h2></div>
+    
+    <div id="acc_menu" >
+    <div id="up_menu"> <span><img src="img/d_arrow.png" /></span><span><img src="img/s_arrow.png" /></span><span><img src="img/list.png" /></span></div>
+    
+   <div id="down_menu"> <span>Deposit</span><span>withdraw</span><span>Details</span></div>
+   
+          </div>  `;
+          
+     const profId = document.getElementById('profile_id');
+    profId.innerHTML = `${data.profile_id}`;
+          
+          
+    const totalprofit = document.getElementById('total_profit');
+    totalprofit.innerHTML = `${data.total_final}`;
+    const today = document.getElementById('today_date');
+    today.innerHTML = `${data.today_date}`;
+    
+        }
+        
+        
+
+        // Fetch the record when the page loads
+        //window.onload = fetchRecord;
+
+    
+
+       /*const API_URL = 'https://deba-debnath.pockethost.io/api/collections/datab/records?sort=-created&perPage=6&fields=title,author,content,buy,sell,price';*/
+       const API_URL = 'https://deba-debnath.pockethost.io/api/collections/datab/records';
+
+        // Function to fetch posts with caching in localStorage
+        async function fetchPosts() {
+            // Try loading posts from localStorage cache
+            const cachedPosts = localStorage.getItem('datab');
+            if (cachedPosts) {
+                displayPosts(JSON.parse(cachedPosts)); // Load cached posts immediately
+            }
+
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+                localStorage.setItem('datab', JSON.stringify(data.items)); // Update cache with latest posts
+                displayPosts(data.items); // Display latest posts after fetch completes
+            } catch (error) {
+                console.error('Error fetching posts:', error);
+            }
+        }
+
+        // Function to display posts dynamically
+        function displayPosts(datab) {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = ''; // Clear previous content
+
+            datab.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+
+const postElement1 = document.createElement('div');
+                postElement1.classList.add('post1');
+
+const postElement_1 = document.createElement('div');
+                postElement_1.classList.add('post_1');
+
+const postElement2 = document.createElement('div');
+                postElement2.classList.add('post2');
+
+
+                const title = document.createElement('div');
+                title.classList.add('post_title');
+        title.innerHTML =`<img src="img/gold.jpg" style="border-radius:;width:26px;" /><span>${post.title}</span>`;
+                
+                
+          const lot = document.createElement('h2');
+               // lot.textContent =`${post.lot}`;
+        //  lot.style.color = post.bs_color;      
+          
+    const xudo = post.lot ; 
+    // Change this value to test different conditions
+        
+
+        // Set the color and text based on the value of xudo
+        if (xudo.startsWith("Buy")) {
+            lot.style.color = "#1F8CEB"; // Set background color to green
+            lot.textContent = xudo; // Display the text
+        } else {
+            lot.style.color = "#DE4A4A"; // Default color for other cases
+        lot.textContent = `${post.lot}`; // Display a default message
+        }      
+          
+    //buy sell color auto      
+              
+              
+              const buy = document.createElement('h2');
+    buy.textContent =`at ${post.buy}`;
+                
+                const sell = document.createElement('h3');
+                sell.textContent = post.sell;
+
+
+
+
+                const final = document.createElement('h2');
+                final.classList.add('final');
+   //  final.textContent =`${(post.sell - post.buy)*(post.price)}`;
+     
+     const char = `${(post.sell - post.buy)*(post.price)}`; // Change this value to test different conditions
+  // Set the color and text based on the value of total final
+        if (char === 0) {
+             // Set background color to black
+            final.textContent = "0 USD"; // Display 0
+            final.style.color = "black"; // Set text color to white for visibility
+        } else if (char > 0) {
+          final.style.color = "#44CC77"; // Set background color to green
+            final.textContent = `+${char} USD`; // Display +20 or any positive value
+        }  else {
+            final.style.color = "#DE4A4A"; // Set to another color for other negative values
+            final.textContent = `${char} USD`; // Optional: Display a message for negative values
+        }
+     
+   //  final.style.color = post.final_color;
+     
+
+
+                
+                
+                
+
+                postElement1.appendChild(title);
+                postElement1.appendChild(final);
+                postElement_1.appendChild(lot);
+                postElement_1.appendChild(buy);
+                postElement2.appendChild(postElement_1);
+                postElement2.appendChild(sell);
+
+        
+        postElement.appendChild(postElement1);
+        postElement.appendChild(postElement2);
+         
+                container.appendChild(postElement);
+                
+            });
+        }
+
+        // Fetch posts when the page loads
+       // window.onload = fetchPosts;
+        
+        window.onload = () => {
+    fetchRecord();
+    fetchPosts();
+};
+
+
+    </script>
+    
+    
+    
+    
+</body>
+</html>
