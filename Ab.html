@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Blog Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button.delete {
+            background-color: #dc3545;
+        }
+        .post {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .post h2 {
+            margin: 0 0 10px;
+        }
+        .post .author {
+            font-size: 0.9em;
+            color: #555;
+        }
+        #error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+        .msg-box{
+         position:fixed;
+         z-index:;
+         top:30px;
+         left:15px;
+         background-color:lightgreen;
+         transform: translateX(-150px);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Admin - Manage Blog Posts</h1>
+
+    <!-- Error message display -->
+    <div id="error-message"></div>
+    
+    <div class="msg-box" id="msg-box">
+  <h3 id="msg" style="color:white;"> successful!! </h3>
+    </div>
+
+    <!-- Login form (hidden by default) -->
+    <form id="login-form">
+        <h2>Admin Login</h2>
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <!-- Form for creating and updating blog posts -->
+    <form id="blog-form" style="display: none;">
+        <input type="hidden" id="post-id">
+        
+<label for="title">Title</label>
+        <input type="text" id="title" placeholder="Enter blog title" required>
+<label for="lot_no">Lot</label>
+        <input type="text" id="lot_no" placeholder="Buy 0.05 lot" required>
+<label for="entry">Entry price</label>
+        <input type="text" id="entry" placeholder="" required>
+<label for="exit">Exit price</label>
+        <input type="text" id="exit" placeholder="" required>
+<label for="lot_price">Price per lot</label>
+        <input type="text" id="lot_price" placeholder="" required>        
+ <label for="title_img">Img</label>
+        <input type="text" id="title_img" placeholder="img/usoil.jpg or img/gold.jpg" required>
+
+
+      <!---  <label for="author">Author</label>
+        <input type="text" id="author" placeholder="Enter blog author" required>
+
+        <label for="content">Content</label>
+        <textarea id="content" placeholder="Enter blog content" required></textarea>--->
+
+        <button type="submit" id="submit-button">Create Post</button>
+    </form>
+
+    <h2>All Posts</h2>
+    <div id="posts-container"></div>
+
+    <script defer>
+        const API_URL = 'https://deba-debnath.pockethost.io/api/collections/datab/records';
+        const LOGIN_URL = 'https://deba-debnath.pockethost.io/api/collections/users/auth-with-password';
+
+        // Store token in localStorage
+        const token = localStorage.getItem('auth_token');
+
+        // If token exists, show blog management form; otherwise, show login form
+        if (token) {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('blog-form').style.display = 'block';
+            fetchPosts(); // Load posts
+        } else {
+            document.getElementById('login-form').style.display = 'block';
+        }
+
+        // Handle login form submission
+        document.getElementById('login-form').addEventListener('submit', async function (event) {
+    event.preventDefault();  // Prevent form from refreshing the page
+    const identity = document.getElementById('email').value;  // Update to "identity"
+    const password = document.getElementById('password').value;
+
+    try {
+        const response = await fetch(LOGIN_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ identity, password })  // Use "identity" here
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            localStorage.setItem('auth_token', data.token); // Save token to localStorage
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('blog-form').style.display = 'block';
+            fetchPosts(); // Load posts after login
+            sweet();
+        } else {
+            showError('Login failed: ' + data.message);
+        }
+    } catch (error) {
+        showError('Error during login: ' + error.message);
+    }
+});
+
+
+        // Fetch and display all posts when the page loads
+        async function fetchPosts() {
+            try {
+                const response = await fetch(API_URL, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await response.json();
+                displayPosts(data.items);
+            } catch (error) {
+                showError('Error fetching posts: ' + error.message);
+            }
+        }
+
+        // Function to display all posts
+        function displayPosts(posts) {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = ''; // Clear previous content
+
+            posts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post');
+
+                const title = document.createElement('h2');
+                title.textContent = post.title;
+
+                const author = document.createElement('p');
+                author.classList.add('author');
+                author.textContent = `By ${post.buy}`;
+
+                const content = document.createElement('p');
+                content.textContent = post.sell;
+
+                // Create edit and delete buttons
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Edit';
+                editButton.onclick = () => editPost(post);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.add('delete');
+                deleteButton.onclick = () => deletePost(post.id);
+
+                postElement.appendChild(title);
+                postElement.appendChild(author);
+                postElement.appendChild(content);
+                postElement.appendChild(editButton);
+                postElement.appendChild(deleteButton);
+
+                container.appendChild(postElement);
+            });
+        }
+
+        // Function to handle form submission for creating or updating posts
+        document.getElementById('blog-form').addEventListener('submit', async function (event) {
+            event.preventDefault();  // Prevent form from refreshing the page
+            
+            const postId = document.getElementById('post-id').value;
+            const title = document.getElementById('title').value;
+            
+            const lotNo = document.getElementById('lot_no').value;
+            
+            const entry = document.getElementById('entry').value;
+            
+            const exit = document.getElementById('exit').value;
+            
+            const lotPrice = document.getElementById('lot_price').value;
+            
+           const pic = document.getElementById('title_img').value;
+
+            const postData = {
+                title: title,
+                lot: lotNo,
+                buy: entry,
+                sell: exit,
+                title_image: pic,
+                price: lotPrice
+            };
+
+            try {
+                if (postId) {
+                    // Update existing post
+                    await fetch(`${API_URL}/${postId}`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(postData)
+                    });
+                } else {
+                    // Create new post
+                    await fetch(API_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify(postData)
+                    });
+                }
+                resetForm();
+                sweet();
+                fetchPosts(); // Refresh the posts after create/update
+            } catch (error) {
+                showError('Error saving post: ' + error.message);
+            }
+        });
+
+        // Function to handle post deletion
+        async function deletePost(id) {
+            try {
+                await fetch(`${API_URL}/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                fetchPosts(); // Refresh the posts after deletion
+                sweet();
+            } catch (error) {
+                showError('Error deleting post: ' + error.message);
+            }
+        }
+
+        // Function to edit a post (populate the form with post data)
+        function editPost(post) {
+            document.getElementById('post-id').value = post.id;
+            document.getElementById('title').value = post.title;
+            document.getElementById('lot_no').value = post.lot;
+            document.getElementById('lot_price').value = post.price;
+            document.getElementById('title_img').value = post.title_image;
+            document.getElementById('entry').value = post.buy;
+            document.getElementById('exit').value = post.sell;
+            document.getElementById('submit-button').textContent = 'Update Post';
+            scrollToTop();
+        }
+
+        // Function to reset the form after submission
+        function resetForm() {
+            document.getElementById('post-id').value = '';
+            document.getElementById('title').value = '';
+            document.getElementById('lot_no').value = '';
+            document.getElementById('lot_price').value = '';
+          document.getElementById('title_img').value = '';
+          document.getElementById('entry').value = '';
+          document.getElementById('exit').value = '';
+          
+            document.getElementById('submit-button').textContent = 'Create Post';
+        }
+        
+  //sweet alert for saving
+        function sweet() {
+  document.getElementById('msg-box').style.transform = 'translateX(100px)';
+  document.getElementById('msg-box').style.transition = 'transform 0.6s';
+  setTimeout(() => {
+    document.getElementById('msg-box').style.transform = 'translateX(-150px)';
+  }, 2000); // Hide the response after 2 seconds
+}
+        //edit button to top
+        function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}      
+
+        // Function to display error messages
+        function showError(message) {
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = message;
+        }
+
+    </script>
+
+</body>
+</html>
+
