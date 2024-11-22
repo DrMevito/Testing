@@ -566,8 +566,8 @@ const postElement2 = document.createElement('div');
                 const final = document.createElement('h2');
                 final.classList.add('final');
    //  final.textContent =`${(post.sell - post.buy)*(post.price)}`;
-     
-     const char = `${(post.sell - post.buy)*(post.price)}`; // Change this value to test different conditions
+     const char = `${post.price}`;
+   //  const char = `${(post.sell - post.buy)*(post.price)}`; // Change this value to test different conditions
   // Set the color and text based on the value of total final
         if (char === 0) {
              // Set background color to black
